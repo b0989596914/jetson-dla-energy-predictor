@@ -1,0 +1,1228 @@
+"""
+將資料預處理成最後predictor的訓練集格式 -> 合成一個csv檔
+
+VGG16 all dataset：
+python preprocess_tina_small_v3.py --feature ./feature_v3/with_blockopt/VGG16/bs1/VGG16_cifar10_input32_with_blockopt_bs1.csv ./feature_v3/with_blockopt/VGG16/bs4/VGG16_cifar10_input32_with_blockopt_bs4.csv ./feature_v3/with_blockopt/VGG16/bs8/VGG16_cifar10_input32_with_blockopt_bs8.csv ./feature_v3/with_blockopt/VGG16/bs16/VGG16_cifar10_input32_with_blockopt_bs16.csv ./feature_v3/with_blockopt/VGG16/bs32/VGG16_cifar10_input32_with_blockopt_bs32.csv ./feature_v3/with_blockopt/VGG16/bs64/VGG16_cifar10_input32_with_blockopt_bs64.csv ./feature_v3/with_blockopt/VGG16/bs1/VGG16_tiny_input64_with_blockopt_bs1.csv ./feature_v3/with_blockopt/VGG16/bs4/VGG16_tiny_input64_with_blockopt_bs4.csv ./feature_v3/with_blockopt/VGG16/bs8/VGG16_tiny_input64_with_blockopt_bs8.csv ./feature_v3/with_blockopt/VGG16/bs16/VGG16_tiny_input64_with_blockopt_bs16.csv ./feature_v3/with_blockopt/VGG16/bs32/VGG16_tiny_input64_with_blockopt_bs32.csv ./feature_v3/with_blockopt/VGG16/bs64/VGG16_tiny_input64_with_blockopt_bs64.csv ./feature_v3/with_blockopt/VGG16/bs1/VGG16_imagenet100_input224_with_blockopt_bs1.csv ./feature_v3/with_blockopt/VGG16/bs4/VGG16_imagenet100_input224_with_blockopt_bs4.csv ./feature_v3/with_blockopt/VGG16/bs8/VGG16_imagenet100_input224_with_blockopt_bs8.csv ./feature_v3/with_blockopt/VGG16/bs16/VGG16_imagenet100_input224_with_blockopt_bs16.csv ./feature_v3/with_blockopt/VGG16/bs32/VGG16_imagenet100_input224_with_blockopt_bs32.csv ./feature_v3/with_blockopt/VGG16/bs64/VGG16_imagenet100_input224_with_blockopt_bs64.csv ./feature_v3/with_blockopt/VGG16/bs1/VGG16_imagenet100_input256_with_blockopt_bs1.csv ./feature_v3/with_blockopt/VGG16/bs4/VGG16_imagenet100_input256_with_blockopt_bs4.csv ./feature_v3/with_blockopt/VGG16/bs8/VGG16_imagenet100_input256_with_blockopt_bs8.csv ./feature_v3/with_blockopt/VGG16/bs16/VGG16_imagenet100_input256_with_blockopt_bs16.csv ./feature_v3/with_blockopt/VGG16/bs32/VGG16_imagenet100_input256_with_blockopt_bs32.csv ./feature_v3/with_blockopt/VGG16/bs64/VGG16_imagenet100_input256_with_blockopt_bs64.csv ./feature_v3/with_blockopt/VGG16/bs1/VGG16_imagenet100_input331_with_blockopt_bs1.csv ./feature_v3/with_blockopt/VGG16/bs4/VGG16_imagenet100_input331_with_blockopt_bs4.csv ./feature_v3/with_blockopt/VGG16/bs8/VGG16_imagenet100_input331_with_blockopt_bs8.csv ./feature_v3/with_blockopt/VGG16/bs16/VGG16_imagenet100_input331_with_blockopt_bs16.csv ./feature_v3/with_blockopt/VGG16/bs32/VGG16_imagenet100_input331_with_blockopt_bs32.csv ./feature_v3/with_blockopt/VGG16/bs64/VGG16_imagenet100_input331_with_blockopt_bs64.csv --energy ./profile_data/with_blockopt/VGG16/bs1/VGG16_cifar10_input32_with_blockopt_bs1_power_results.csv ./profile_data/with_blockopt/VGG16/bs4/VGG16_cifar10_input32_with_blockopt_bs4_power_results.csv ./profile_data/with_blockopt/VGG16/bs8/VGG16_cifar10_input32_with_blockopt_bs8_power_results.csv ./profile_data/with_blockopt/VGG16/bs16/VGG16_cifar10_input32_with_blockopt_bs16_power_results.csv ./profile_data/with_blockopt/VGG16/bs32/VGG16_cifar10_input32_with_blockopt_bs32_power_results.csv ./profile_data/with_blockopt/VGG16/bs64/VGG16_cifar10_input32_with_blockopt_bs64_power_results.csv ./profile_data/with_blockopt/VGG16/bs1/VGG16_tiny_input64_with_blockopt_bs1_power_results.csv ./profile_data/with_blockopt/VGG16/bs4/VGG16_tiny_input64_with_blockopt_bs4_power_results.csv ./profile_data/with_blockopt/VGG16/bs8/VGG16_tiny_input64_with_blockopt_bs8_power_results.csv ./profile_data/with_blockopt/VGG16/bs16/VGG16_tiny_input64_with_blockopt_bs16_power_results.csv ./profile_data/with_blockopt/VGG16/bs32/VGG16_tiny_input64_with_blockopt_bs32_power_results.csv ./profile_data/with_blockopt/VGG16/bs64/VGG16_tiny_input64_with_blockopt_bs64_power_results.csv ./profile_data/with_blockopt/VGG16/bs1/VGG16_imagenet100_input224_with_blockopt_bs1_power_results.csv ./profile_data/with_blockopt/VGG16/bs4/VGG16_imagenet100_input224_with_blockopt_bs4_power_results.csv ./profile_data/with_blockopt/VGG16/bs8/VGG16_imagenet100_input224_with_blockopt_bs8_power_results.csv ./profile_data/with_blockopt/VGG16/bs16/VGG16_imagenet100_input224_with_blockopt_bs16_power_results.csv ./profile_data/with_blockopt/VGG16/bs32/VGG16_imagenet100_input224_with_blockopt_bs32_power_results.csv ./profile_data/with_blockopt/VGG16/bs64/VGG16_imagenet100_input224_with_blockopt_bs64_power_results.csv ./profile_data/with_blockopt/VGG16/bs1/VGG16_imagenet100_input256_with_blockopt_bs1_power_results.csv ./profile_data/with_blockopt/VGG16/bs4/VGG16_imagenet100_input256_with_blockopt_bs4_power_results.csv ./profile_data/with_blockopt/VGG16/bs8/VGG16_imagenet100_input256_with_blockopt_bs8_power_results.csv ./profile_data/with_blockopt/VGG16/bs16/VGG16_imagenet100_input256_with_blockopt_bs16_power_results.csv ./profile_data/with_blockopt/VGG16/bs32/VGG16_imagenet100_input256_with_blockopt_bs32_power_results.csv ./profile_data/with_blockopt/VGG16/bs64/VGG16_imagenet100_input256_with_blockopt_bs64_power_results.csv ./profile_data/with_blockopt/VGG16/bs1/VGG16_imagenet100_input331_with_blockopt_bs1_power_results.csv ./profile_data/with_blockopt/VGG16/bs4/VGG16_imagenet100_input331_with_blockopt_bs4_power_results.csv ./profile_data/with_blockopt/VGG16/bs8/VGG16_imagenet100_input331_with_blockopt_bs8_power_results.csv ./profile_data/with_blockopt/VGG16/bs16/VGG16_imagenet100_input331_with_blockopt_bs16_power_results.csv ./profile_data/with_blockopt/VGG16/bs32/VGG16_imagenet100_input331_with_blockopt_bs32_power_results.csv ./profile_data/with_blockopt/VGG16/bs64/VGG16_imagenet100_input331_with_blockopt_bs64_power_results.csv --out ../../PowerPredictor/DLA/training_data_1107/VGG16/VGG16_with_blockopt.csv
+
+先整理成換行：(有拿掉cifar bs1 presetD、tiny bs1 presetC)
+python preprocess_tina_small_v3.py --feature \
+./feature_v3/with_blockopt/VGG16/bs1/preset_A/VGG16_cifar10_input32_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_A/VGG16_cifar10_input32_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_A/VGG16_cifar10_input32_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_A/VGG16_cifar10_input32_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_A/VGG16_cifar10_input32_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_A/VGG16_cifar10_input32_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_A/VGG16_tiny_input64_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_A/VGG16_tiny_input64_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_A/VGG16_tiny_input64_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_A/VGG16_tiny_input64_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_A/VGG16_tiny_input64_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_A/VGG16_tiny_input64_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_A/VGG16_imagenet100_input224_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_A/VGG16_imagenet100_input224_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_A/VGG16_imagenet100_input224_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_A/VGG16_imagenet100_input224_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_A/VGG16_imagenet100_input224_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_A/VGG16_imagenet100_input224_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_A/VGG16_imagenet100_input256_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_A/VGG16_imagenet100_input256_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_A/VGG16_imagenet100_input256_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_A/VGG16_imagenet100_input256_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_A/VGG16_imagenet100_input256_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_A/VGG16_imagenet100_input256_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_A/VGG16_imagenet100_input331_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_A/VGG16_imagenet100_input331_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_A/VGG16_imagenet100_input331_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_A/VGG16_imagenet100_input331_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_A/VGG16_imagenet100_input331_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_A/VGG16_imagenet100_input331_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_B/VGG16_cifar10_input32_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_B/VGG16_cifar10_input32_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_B/VGG16_cifar10_input32_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_B/VGG16_cifar10_input32_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_B/VGG16_cifar10_input32_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_B/VGG16_cifar10_input32_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_B/VGG16_tiny_input64_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_B/VGG16_tiny_input64_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_B/VGG16_tiny_input64_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_B/VGG16_tiny_input64_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_B/VGG16_tiny_input64_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_B/VGG16_tiny_input64_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_B/VGG16_imagenet100_input224_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_B/VGG16_imagenet100_input224_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_B/VGG16_imagenet100_input224_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_B/VGG16_imagenet100_input224_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_B/VGG16_imagenet100_input224_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_B/VGG16_imagenet100_input224_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_B/VGG16_imagenet100_input256_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_B/VGG16_imagenet100_input256_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_B/VGG16_imagenet100_input256_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_B/VGG16_imagenet100_input256_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_B/VGG16_imagenet100_input256_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_B/VGG16_imagenet100_input256_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_B/VGG16_imagenet100_input331_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_B/VGG16_imagenet100_input331_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_B/VGG16_imagenet100_input331_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_B/VGG16_imagenet100_input331_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_B/VGG16_imagenet100_input331_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_B/VGG16_imagenet100_input331_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_C/VGG16_cifar10_input32_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_C/VGG16_cifar10_input32_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_C/VGG16_cifar10_input32_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_C/VGG16_cifar10_input32_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_C/VGG16_cifar10_input32_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_C/VGG16_cifar10_input32_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_C/VGG16_tiny_input64_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_C/VGG16_tiny_input64_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_C/VGG16_tiny_input64_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_C/VGG16_tiny_input64_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_C/VGG16_tiny_input64_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_C/VGG16_imagenet100_input224_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_C/VGG16_imagenet100_input224_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_C/VGG16_imagenet100_input224_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_C/VGG16_imagenet100_input224_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_C/VGG16_imagenet100_input224_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_C/VGG16_imagenet100_input224_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_C/VGG16_imagenet100_input256_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_C/VGG16_imagenet100_input256_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_C/VGG16_imagenet100_input256_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_C/VGG16_imagenet100_input256_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_C/VGG16_imagenet100_input256_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_C/VGG16_imagenet100_input256_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_C/VGG16_imagenet100_input331_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_C/VGG16_imagenet100_input331_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_C/VGG16_imagenet100_input331_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_C/VGG16_imagenet100_input331_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_C/VGG16_imagenet100_input331_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_C/VGG16_imagenet100_input331_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_D/VGG16_cifar10_input32_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_D/VGG16_cifar10_input32_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_D/VGG16_cifar10_input32_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_D/VGG16_cifar10_input32_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_D/VGG16_cifar10_input32_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_D/VGG16_tiny_input64_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_D/VGG16_tiny_input64_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_D/VGG16_tiny_input64_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_D/VGG16_tiny_input64_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_D/VGG16_tiny_input64_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_D/VGG16_tiny_input64_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_D/VGG16_imagenet100_input224_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_D/VGG16_imagenet100_input224_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_D/VGG16_imagenet100_input224_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_D/VGG16_imagenet100_input224_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_D/VGG16_imagenet100_input224_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_D/VGG16_imagenet100_input224_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_D/VGG16_imagenet100_input256_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_D/VGG16_imagenet100_input256_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_D/VGG16_imagenet100_input256_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_D/VGG16_imagenet100_input256_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_D/VGG16_imagenet100_input256_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_D/VGG16_imagenet100_input256_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs1/preset_D/VGG16_imagenet100_input331_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs4/preset_D/VGG16_imagenet100_input331_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs8/preset_D/VGG16_imagenet100_input331_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs16/preset_D/VGG16_imagenet100_input331_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs32/preset_D/VGG16_imagenet100_input331_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/VGG16/bs64/preset_D/VGG16_imagenet100_input331_with_blockopt_bs64_preset_D.csv \
+--energy \
+./profile_data/with_blockopt/VGG16/bs1/preset_A/VGG16_cifar10_input32_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_A/VGG16_cifar10_input32_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_A/VGG16_cifar10_input32_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_A/VGG16_cifar10_input32_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_A/VGG16_cifar10_input32_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_A/VGG16_cifar10_input32_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_A/VGG16_tiny_input64_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_A/VGG16_tiny_input64_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_A/VGG16_tiny_input64_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_A/VGG16_tiny_input64_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_A/VGG16_tiny_input64_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_A/VGG16_tiny_input64_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_A/VGG16_imagenet100_input224_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_A/VGG16_imagenet100_input224_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_A/VGG16_imagenet100_input224_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_A/VGG16_imagenet100_input224_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_A/VGG16_imagenet100_input224_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_A/VGG16_imagenet100_input224_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_A/VGG16_imagenet100_input256_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_A/VGG16_imagenet100_input256_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_A/VGG16_imagenet100_input256_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_A/VGG16_imagenet100_input256_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_A/VGG16_imagenet100_input256_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_A/VGG16_imagenet100_input256_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_A/VGG16_imagenet100_input331_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_A/VGG16_imagenet100_input331_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_A/VGG16_imagenet100_input331_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_A/VGG16_imagenet100_input331_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_A/VGG16_imagenet100_input331_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_A/VGG16_imagenet100_input331_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_B/VGG16_cifar10_input32_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_B/VGG16_cifar10_input32_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_B/VGG16_cifar10_input32_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_B/VGG16_cifar10_input32_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_B/VGG16_cifar10_input32_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_B/VGG16_cifar10_input32_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_B/VGG16_tiny_input64_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_B/VGG16_tiny_input64_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_B/VGG16_tiny_input64_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_B/VGG16_tiny_input64_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_B/VGG16_tiny_input64_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_B/VGG16_tiny_input64_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_B/VGG16_imagenet100_input224_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_B/VGG16_imagenet100_input224_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_B/VGG16_imagenet100_input224_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_B/VGG16_imagenet100_input224_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_B/VGG16_imagenet100_input224_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_B/VGG16_imagenet100_input224_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_B/VGG16_imagenet100_input256_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_B/VGG16_imagenet100_input256_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_B/VGG16_imagenet100_input256_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_B/VGG16_imagenet100_input256_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_B/VGG16_imagenet100_input256_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_B/VGG16_imagenet100_input256_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_B/VGG16_imagenet100_input331_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_B/VGG16_imagenet100_input331_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_B/VGG16_imagenet100_input331_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_B/VGG16_imagenet100_input331_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_B/VGG16_imagenet100_input331_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_B/VGG16_imagenet100_input331_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_C/VGG16_cifar10_input32_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_C/VGG16_cifar10_input32_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_C/VGG16_cifar10_input32_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_C/VGG16_cifar10_input32_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_C/VGG16_cifar10_input32_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_C/VGG16_cifar10_input32_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_C/VGG16_tiny_input64_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_C/VGG16_tiny_input64_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_C/VGG16_tiny_input64_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_C/VGG16_tiny_input64_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_C/VGG16_tiny_input64_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_C/VGG16_imagenet100_input224_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_C/VGG16_imagenet100_input224_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_C/VGG16_imagenet100_input224_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_C/VGG16_imagenet100_input224_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_C/VGG16_imagenet100_input224_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_C/VGG16_imagenet100_input224_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_C/VGG16_imagenet100_input256_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_C/VGG16_imagenet100_input256_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_C/VGG16_imagenet100_input256_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_C/VGG16_imagenet100_input256_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_C/VGG16_imagenet100_input256_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_C/VGG16_imagenet100_input256_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_C/VGG16_imagenet100_input331_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_C/VGG16_imagenet100_input331_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_C/VGG16_imagenet100_input331_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_C/VGG16_imagenet100_input331_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_C/VGG16_imagenet100_input331_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_C/VGG16_imagenet100_input331_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_D/VGG16_cifar10_input32_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_D/VGG16_cifar10_input32_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_D/VGG16_cifar10_input32_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_D/VGG16_cifar10_input32_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_D/VGG16_cifar10_input32_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_D/VGG16_tiny_input64_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_D/VGG16_tiny_input64_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_D/VGG16_tiny_input64_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_D/VGG16_tiny_input64_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_D/VGG16_tiny_input64_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_D/VGG16_tiny_input64_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_D/VGG16_imagenet100_input224_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_D/VGG16_imagenet100_input224_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_D/VGG16_imagenet100_input224_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_D/VGG16_imagenet100_input224_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_D/VGG16_imagenet100_input224_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_D/VGG16_imagenet100_input224_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_D/VGG16_imagenet100_input256_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_D/VGG16_imagenet100_input256_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_D/VGG16_imagenet100_input256_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_D/VGG16_imagenet100_input256_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_D/VGG16_imagenet100_input256_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_D/VGG16_imagenet100_input256_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs1/preset_D/VGG16_imagenet100_input331_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs4/preset_D/VGG16_imagenet100_input331_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs8/preset_D/VGG16_imagenet100_input331_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs16/preset_D/VGG16_imagenet100_input331_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs32/preset_D/VGG16_imagenet100_input331_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG16/bs64/preset_D/VGG16_imagenet100_input331_with_blockopt_bs64_preset_D_power_results.csv \
+--out ../../PowerPredictor/DLA/training_data_v3/VGG16/VGG16_with_blockopt_preset_all.csv
+
+
+
+
+
+
+# VGG19 all dataset：
+python preprocess_tina_small_v3.py --feature \
+./feature_v3/with_blockopt/VGG19/bs1/preset_A/VGG19_cifar10_input32_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_A/VGG19_cifar10_input32_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_A/VGG19_cifar10_input32_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_A/VGG19_cifar10_input32_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_A/VGG19_cifar10_input32_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_A/VGG19_cifar10_input32_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_A/VGG19_tiny_input64_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_A/VGG19_tiny_input64_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_A/VGG19_tiny_input64_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_A/VGG19_tiny_input64_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_A/VGG19_tiny_input64_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_A/VGG19_tiny_input64_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_A/VGG19_imagenet100_input224_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_A/VGG19_imagenet100_input224_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_A/VGG19_imagenet100_input224_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_A/VGG19_imagenet100_input224_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_A/VGG19_imagenet100_input224_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_A/VGG19_imagenet100_input224_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_A/VGG19_imagenet100_input256_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_A/VGG19_imagenet100_input256_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_A/VGG19_imagenet100_input256_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_A/VGG19_imagenet100_input256_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_A/VGG19_imagenet100_input256_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_A/VGG19_imagenet100_input256_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_A/VGG19_imagenet100_input331_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_A/VGG19_imagenet100_input331_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_A/VGG19_imagenet100_input331_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_A/VGG19_imagenet100_input331_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_A/VGG19_imagenet100_input331_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_A/VGG19_imagenet100_input331_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_B/VGG19_cifar10_input32_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_B/VGG19_cifar10_input32_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_B/VGG19_cifar10_input32_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_B/VGG19_cifar10_input32_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_B/VGG19_cifar10_input32_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_B/VGG19_cifar10_input32_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_B/VGG19_tiny_input64_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_B/VGG19_tiny_input64_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_B/VGG19_tiny_input64_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_B/VGG19_tiny_input64_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_B/VGG19_tiny_input64_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_B/VGG19_tiny_input64_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_B/VGG19_imagenet100_input224_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_B/VGG19_imagenet100_input224_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_B/VGG19_imagenet100_input224_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_B/VGG19_imagenet100_input224_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_B/VGG19_imagenet100_input224_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_B/VGG19_imagenet100_input224_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_B/VGG19_imagenet100_input256_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_B/VGG19_imagenet100_input256_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_B/VGG19_imagenet100_input256_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_B/VGG19_imagenet100_input256_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_B/VGG19_imagenet100_input256_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_B/VGG19_imagenet100_input256_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_B/VGG19_imagenet100_input331_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_B/VGG19_imagenet100_input331_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_B/VGG19_imagenet100_input331_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_B/VGG19_imagenet100_input331_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_B/VGG19_imagenet100_input331_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_B/VGG19_imagenet100_input331_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_C/VGG19_cifar10_input32_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_C/VGG19_cifar10_input32_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_C/VGG19_cifar10_input32_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_C/VGG19_cifar10_input32_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_C/VGG19_cifar10_input32_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_C/VGG19_cifar10_input32_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_C/VGG19_tiny_input64_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_C/VGG19_tiny_input64_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_C/VGG19_tiny_input64_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_C/VGG19_tiny_input64_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_C/VGG19_tiny_input64_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_C/VGG19_imagenet100_input224_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_C/VGG19_imagenet100_input224_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_C/VGG19_imagenet100_input224_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_C/VGG19_imagenet100_input224_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_C/VGG19_imagenet100_input224_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_C/VGG19_imagenet100_input224_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_C/VGG19_imagenet100_input256_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_C/VGG19_imagenet100_input256_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_C/VGG19_imagenet100_input256_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_C/VGG19_imagenet100_input256_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_C/VGG19_imagenet100_input256_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_C/VGG19_imagenet100_input256_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_C/VGG19_imagenet100_input331_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_C/VGG19_imagenet100_input331_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_C/VGG19_imagenet100_input331_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_C/VGG19_imagenet100_input331_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_C/VGG19_imagenet100_input331_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_C/VGG19_imagenet100_input331_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_D/VGG19_cifar10_input32_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_D/VGG19_cifar10_input32_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_D/VGG19_cifar10_input32_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_D/VGG19_cifar10_input32_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_D/VGG19_cifar10_input32_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_D/VGG19_tiny_input64_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_D/VGG19_tiny_input64_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_D/VGG19_tiny_input64_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_D/VGG19_tiny_input64_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_D/VGG19_tiny_input64_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_D/VGG19_tiny_input64_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_D/VGG19_imagenet100_input224_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_D/VGG19_imagenet100_input224_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_D/VGG19_imagenet100_input224_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_D/VGG19_imagenet100_input224_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_D/VGG19_imagenet100_input224_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_D/VGG19_imagenet100_input224_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_D/VGG19_imagenet100_input256_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_D/VGG19_imagenet100_input256_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_D/VGG19_imagenet100_input256_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_D/VGG19_imagenet100_input256_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_D/VGG19_imagenet100_input256_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_D/VGG19_imagenet100_input256_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs1/preset_D/VGG19_imagenet100_input331_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs4/preset_D/VGG19_imagenet100_input331_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs8/preset_D/VGG19_imagenet100_input331_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs16/preset_D/VGG19_imagenet100_input331_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs32/preset_D/VGG19_imagenet100_input331_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/VGG19/bs64/preset_D/VGG19_imagenet100_input331_with_blockopt_bs64_preset_D.csv \
+--energy \
+./profile_data/with_blockopt/VGG19/bs1/preset_A/VGG19_cifar10_input32_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_A/VGG19_cifar10_input32_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_A/VGG19_cifar10_input32_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_A/VGG19_cifar10_input32_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_A/VGG19_cifar10_input32_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_A/VGG19_cifar10_input32_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_A/VGG19_tiny_input64_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_A/VGG19_tiny_input64_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_A/VGG19_tiny_input64_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_A/VGG19_tiny_input64_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_A/VGG19_tiny_input64_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_A/VGG19_tiny_input64_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_A/VGG19_imagenet100_input224_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_A/VGG19_imagenet100_input224_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_A/VGG19_imagenet100_input224_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_A/VGG19_imagenet100_input224_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_A/VGG19_imagenet100_input224_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_A/VGG19_imagenet100_input224_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_A/VGG19_imagenet100_input256_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_A/VGG19_imagenet100_input256_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_A/VGG19_imagenet100_input256_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_A/VGG19_imagenet100_input256_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_A/VGG19_imagenet100_input256_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_A/VGG19_imagenet100_input256_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_A/VGG19_imagenet100_input331_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_A/VGG19_imagenet100_input331_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_A/VGG19_imagenet100_input331_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_A/VGG19_imagenet100_input331_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_A/VGG19_imagenet100_input331_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_A/VGG19_imagenet100_input331_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_B/VGG19_cifar10_input32_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_B/VGG19_cifar10_input32_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_B/VGG19_cifar10_input32_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_B/VGG19_cifar10_input32_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_B/VGG19_cifar10_input32_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_B/VGG19_cifar10_input32_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_B/VGG19_tiny_input64_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_B/VGG19_tiny_input64_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_B/VGG19_tiny_input64_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_B/VGG19_tiny_input64_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_B/VGG19_tiny_input64_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_B/VGG19_tiny_input64_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_B/VGG19_imagenet100_input224_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_B/VGG19_imagenet100_input224_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_B/VGG19_imagenet100_input224_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_B/VGG19_imagenet100_input224_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_B/VGG19_imagenet100_input224_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_B/VGG19_imagenet100_input224_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_B/VGG19_imagenet100_input256_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_B/VGG19_imagenet100_input256_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_B/VGG19_imagenet100_input256_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_B/VGG19_imagenet100_input256_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_B/VGG19_imagenet100_input256_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_B/VGG19_imagenet100_input256_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_B/VGG19_imagenet100_input331_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_B/VGG19_imagenet100_input331_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_B/VGG19_imagenet100_input331_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_B/VGG19_imagenet100_input331_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_B/VGG19_imagenet100_input331_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_B/VGG19_imagenet100_input331_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_C/VGG19_cifar10_input32_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_C/VGG19_cifar10_input32_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_C/VGG19_cifar10_input32_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_C/VGG19_cifar10_input32_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_C/VGG19_cifar10_input32_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_C/VGG19_cifar10_input32_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_C/VGG19_tiny_input64_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_C/VGG19_tiny_input64_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_C/VGG19_tiny_input64_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_C/VGG19_tiny_input64_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_C/VGG19_tiny_input64_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_C/VGG19_imagenet100_input224_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_C/VGG19_imagenet100_input224_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_C/VGG19_imagenet100_input224_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_C/VGG19_imagenet100_input224_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_C/VGG19_imagenet100_input224_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_C/VGG19_imagenet100_input224_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_C/VGG19_imagenet100_input256_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_C/VGG19_imagenet100_input256_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_C/VGG19_imagenet100_input256_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_C/VGG19_imagenet100_input256_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_C/VGG19_imagenet100_input256_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_C/VGG19_imagenet100_input256_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_C/VGG19_imagenet100_input331_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_C/VGG19_imagenet100_input331_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_C/VGG19_imagenet100_input331_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_C/VGG19_imagenet100_input331_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_C/VGG19_imagenet100_input331_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_C/VGG19_imagenet100_input331_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_D/VGG19_cifar10_input32_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_D/VGG19_cifar10_input32_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_D/VGG19_cifar10_input32_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_D/VGG19_cifar10_input32_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_D/VGG19_cifar10_input32_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_D/VGG19_tiny_input64_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_D/VGG19_tiny_input64_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_D/VGG19_tiny_input64_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_D/VGG19_tiny_input64_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_D/VGG19_tiny_input64_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_D/VGG19_tiny_input64_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_D/VGG19_imagenet100_input224_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_D/VGG19_imagenet100_input224_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_D/VGG19_imagenet100_input224_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_D/VGG19_imagenet100_input224_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_D/VGG19_imagenet100_input224_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_D/VGG19_imagenet100_input224_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_D/VGG19_imagenet100_input256_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_D/VGG19_imagenet100_input256_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_D/VGG19_imagenet100_input256_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_D/VGG19_imagenet100_input256_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_D/VGG19_imagenet100_input256_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_D/VGG19_imagenet100_input256_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs1/preset_D/VGG19_imagenet100_input331_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs4/preset_D/VGG19_imagenet100_input331_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs8/preset_D/VGG19_imagenet100_input331_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs16/preset_D/VGG19_imagenet100_input331_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs32/preset_D/VGG19_imagenet100_input331_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/VGG19/bs64/preset_D/VGG19_imagenet100_input331_with_blockopt_bs64_preset_D_power_results.csv \
+--out ../../PowerPredictor/DLA/training_data_v3/VGG19/VGG19_with_blockopt_preset_all.csv
+
+# ResNet50 all dataset：
+python preprocess_tina_small_v3.py --feature \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_A/ResNet50_cifar10_input32_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_A/ResNet50_cifar10_input32_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_A/ResNet50_cifar10_input32_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_A/ResNet50_cifar10_input32_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_A/ResNet50_cifar10_input32_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_A/ResNet50_cifar10_input32_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_A/ResNet50_tiny_input64_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_A/ResNet50_tiny_input64_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_A/ResNet50_tiny_input64_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_A/ResNet50_tiny_input64_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_A/ResNet50_tiny_input64_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_A/ResNet50_tiny_input64_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_B/ResNet50_cifar10_input32_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_B/ResNet50_cifar10_input32_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_B/ResNet50_cifar10_input32_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_B/ResNet50_cifar10_input32_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_B/ResNet50_cifar10_input32_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_B/ResNet50_cifar10_input32_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_B/ResNet50_tiny_input64_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_B/ResNet50_tiny_input64_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_B/ResNet50_tiny_input64_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_B/ResNet50_tiny_input64_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_B/ResNet50_tiny_input64_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_B/ResNet50_tiny_input64_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_C/ResNet50_cifar10_input32_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_C/ResNet50_cifar10_input32_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_C/ResNet50_cifar10_input32_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_C/ResNet50_cifar10_input32_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_C/ResNet50_cifar10_input32_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_C/ResNet50_cifar10_input32_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_C/ResNet50_tiny_input64_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_C/ResNet50_tiny_input64_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_C/ResNet50_tiny_input64_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_C/ResNet50_tiny_input64_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_C/ResNet50_tiny_input64_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_C/ResNet50_tiny_input64_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_D/ResNet50_cifar10_input32_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_D/ResNet50_cifar10_input32_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_D/ResNet50_cifar10_input32_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_D/ResNet50_cifar10_input32_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_D/ResNet50_cifar10_input32_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_D/ResNet50_cifar10_input32_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_D/ResNet50_tiny_input64_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_D/ResNet50_tiny_input64_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_D/ResNet50_tiny_input64_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_D/ResNet50_tiny_input64_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_D/ResNet50_tiny_input64_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_D/ResNet50_tiny_input64_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs1/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs4/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs8/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs16/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs32/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/ResNet50/bs64/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs64_preset_D.csv \
+--energy \
+./profile_data/with_blockopt/ResNet50/bs1/preset_A/ResNet50_cifar10_input32_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_A/ResNet50_cifar10_input32_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_A/ResNet50_cifar10_input32_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_A/ResNet50_cifar10_input32_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_A/ResNet50_cifar10_input32_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_A/ResNet50_cifar10_input32_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_A/ResNet50_tiny_input64_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_A/ResNet50_tiny_input64_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_A/ResNet50_tiny_input64_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_A/ResNet50_tiny_input64_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_A/ResNet50_tiny_input64_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_A/ResNet50_tiny_input64_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_A/ResNet50_imagenet100_input224_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_A/ResNet50_imagenet100_input256_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_A/ResNet50_imagenet100_input331_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_B/ResNet50_cifar10_input32_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_B/ResNet50_cifar10_input32_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_B/ResNet50_cifar10_input32_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_B/ResNet50_cifar10_input32_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_B/ResNet50_cifar10_input32_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_B/ResNet50_cifar10_input32_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_B/ResNet50_tiny_input64_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_B/ResNet50_tiny_input64_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_B/ResNet50_tiny_input64_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_B/ResNet50_tiny_input64_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_B/ResNet50_tiny_input64_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_B/ResNet50_tiny_input64_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_B/ResNet50_imagenet100_input224_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_B/ResNet50_imagenet100_input256_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_B/ResNet50_imagenet100_input331_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_C/ResNet50_cifar10_input32_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_C/ResNet50_cifar10_input32_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_C/ResNet50_cifar10_input32_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_C/ResNet50_cifar10_input32_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_C/ResNet50_cifar10_input32_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_C/ResNet50_cifar10_input32_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_C/ResNet50_tiny_input64_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_C/ResNet50_tiny_input64_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_C/ResNet50_tiny_input64_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_C/ResNet50_tiny_input64_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_C/ResNet50_tiny_input64_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_C/ResNet50_tiny_input64_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_C/ResNet50_imagenet100_input224_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_C/ResNet50_imagenet100_input256_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_C/ResNet50_imagenet100_input331_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_D/ResNet50_cifar10_input32_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_D/ResNet50_cifar10_input32_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_D/ResNet50_cifar10_input32_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_D/ResNet50_cifar10_input32_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_D/ResNet50_cifar10_input32_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_D/ResNet50_cifar10_input32_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_D/ResNet50_tiny_input64_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_D/ResNet50_tiny_input64_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_D/ResNet50_tiny_input64_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_D/ResNet50_tiny_input64_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_D/ResNet50_tiny_input64_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_D/ResNet50_tiny_input64_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_D/ResNet50_imagenet100_input224_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_D/ResNet50_imagenet100_input256_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs1/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs4/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs8/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs16/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs32/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/ResNet50/bs64/preset_D/ResNet50_imagenet100_input331_with_blockopt_bs64_preset_D_power_results.csv \
+--out ../../PowerPredictor/DLA/training_data_v3/ResNet50/ResNet50_with_blockopt_preset_all.csv
+
+
+
+# MobileNetV2 all dataset：
+python preprocess_tina_small_v3.py --feature \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs1_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs4_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs8_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs16_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs32_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs64_preset_A.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs1_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs4_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs8_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs16_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs32_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs64_preset_B.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_C/MobileNetV2_tiny_input64_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_C/MobileNetV2_tiny_input64_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_C/MobileNetV2_tiny_input64_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_C/MobileNetV2_tiny_input64_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_C/MobileNetV2_tiny_input64_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs1_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs4_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs8_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs16_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs32_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs64_preset_C.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_D/MobileNetV2_cifar10_input32_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_D/MobileNetV2_cifar10_input32_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_D/MobileNetV2_cifar10_input32_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_D/MobileNetV2_cifar10_input32_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_D/MobileNetV2_cifar10_input32_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs64_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs1/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs1_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs4/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs4_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs8/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs8_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs16/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs16_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs32/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs32_preset_D.csv \
+./feature_v3/with_blockopt/MobileNetV2/bs64/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs64_preset_D.csv \
+--energy \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_A/MobileNetV2_cifar10_input32_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_A/MobileNetV2_tiny_input64_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_A/MobileNetV2_imagenet100_input224_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_A/MobileNetV2_imagenet100_input256_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs1_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs4_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs8_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs16_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs32_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_A/MobileNetV2_imagenet100_input331_with_blockopt_bs64_preset_A_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_B/MobileNetV2_cifar10_input32_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_B/MobileNetV2_tiny_input64_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_B/MobileNetV2_imagenet100_input224_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_B/MobileNetV2_imagenet100_input256_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs1_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs4_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs8_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs16_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs32_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_B/MobileNetV2_imagenet100_input331_with_blockopt_bs64_preset_B_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_C/MobileNetV2_cifar10_input32_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_C/MobileNetV2_tiny_input64_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_C/MobileNetV2_tiny_input64_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_C/MobileNetV2_tiny_input64_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_C/MobileNetV2_tiny_input64_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_C/MobileNetV2_tiny_input64_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_C/MobileNetV2_imagenet100_input224_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_C/MobileNetV2_imagenet100_input256_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs1_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs4_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs8_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs16_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs32_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_C/MobileNetV2_imagenet100_input331_with_blockopt_bs64_preset_C_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_D/MobileNetV2_cifar10_input32_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_D/MobileNetV2_cifar10_input32_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_D/MobileNetV2_cifar10_input32_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_D/MobileNetV2_cifar10_input32_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_D/MobileNetV2_cifar10_input32_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_D/MobileNetV2_tiny_input64_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_D/MobileNetV2_imagenet100_input224_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_D/MobileNetV2_imagenet100_input256_with_blockopt_bs64_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs1/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs1_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs4/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs4_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs8/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs8_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs16/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs16_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs32/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs32_preset_D_power_results.csv \
+./profile_data/with_blockopt/MobileNetV2/bs64/preset_D/MobileNetV2_imagenet100_input331_with_blockopt_bs64_preset_D_power_results.csv \
+--out ../../PowerPredictor/DLA/training_data_v3/MobileNetV2/MobileNetV2_with_blockopt_preset_all.csv
+"""
+
+import re
+import argparse
+import os
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+import numpy as np # 確保 numpy 存在 (雖然在這段程式碼中沒有直接用到，但上層環境需要)
+
+def parse_shape(shape_str):
+    try:
+        parts = list(map(int, shape_str.split(',')))
+        if len(parts) == 4:
+            return {
+                'batch_size': parts[0],
+                'channels': parts[1],
+                'height': parts[2],
+                'width': parts[3],
+                'resolution': parts[2] * parts[3],
+                'volume': parts[1] * parts[2] * parts[3]
+            }
+    except:
+        return {}
+    return {}
+
+def load_feature_energy_pair(feature_path, energy_path, source_name):
+    features = pd.read_csv(feature_path)
+
+    # --- 1) 盡可能把數值欄位轉成數字（更明確地處理所有數值欄位） ---
+    # 數值欄位列表包含所有新增的 memory/log/density 欄位
+    NUMERIC_COLS = [
+        'batch_size', 'input_channels', 'output_channels', 'num_layers', 
+        'macs', 'flops', 
+        'log_macs', 'log_flops', 'input_mem_MB', 'output_mem_MB', 'total_mem_MB', 
+        'log_total_mem_MB', 'compute_density', 'compute_intensity', 
+        'log_compute_density', 'log_compute_intensity', 'depth_ratio', 'aspect_ratio'
+    ]
+    
+    for col in features.columns:
+        if col in NUMERIC_COLS:
+            # 嘗試數值轉型，強制錯誤值為 NaN，避免保留錯誤字串
+            features[col] = pd.to_numeric(features[col], errors='coerce')
+
+    # --- 2) 解析 tensor shape -> 衍生特徵 (保留原始邏輯) ---
+    # 雖然您的 CSV 中已有 input_resolution/output_resolution，
+    # 但這個步驟會額外產生 input/output_height/width/volume 等額外特徵，故保留。
+    if 'input_tensor_shape' in features.columns:
+        # 確保 fillna('') 處理 shape 字串缺失的問題
+        input_info = features['input_tensor_shape'].fillna('').apply(parse_shape)
+        # 注意: 這裡的 features 已經包含 input_channels, output_channels, batch_size (從 CSV 直接讀入的)
+        for key in ['channels', 'height', 'width', 'resolution', 'volume']:
+            features[f'input_{key}'] = input_info.apply(lambda x: x.get(key, 0))
+            
+    if 'output_tensor_shape' in features.columns:
+        output_info = features['output_tensor_shape'].fillna('').apply(parse_shape)
+        for key in ['channels', 'height', 'width', 'resolution', 'volume']:
+            features[f'output_{key}'] = output_info.apply(lambda x: x.get(key, 0))
+
+    # --- 3) One-hot（先 fillna('')，避免空值） ---
+    for col in ['activation_types', 'layer_types']:
+        if col in features.columns:
+            dummies = features[col].fillna('').str.get_dummies(sep=',')
+            dummies.columns = [f"{col}_{c}" for c in dummies.columns]
+            features = pd.concat([features, dummies], axis=1)
+
+    # --- 4) 保留 block_row、來源名 ---
+    # 新增 preset_id：從檔名抓 A/B/C/D，抓不到就給 'none'
+    preset_id = 'none'
+    m = re.search(r'preset_([ABCD])', source_name)
+    if m:
+        preset_id = m.group(1)
+    features['preset_id'] = preset_id
+    # 將preset做成one-hot，這樣模型就知道：這個 block 是從 preset_A 切的 → 要學它的 pattern
+    # ---- one-hot encode preset ----
+    preset_dummies = pd.get_dummies(features['preset_id'], prefix="preset")
+    features = pd.concat([features, preset_dummies], axis=1)
+    
+    features['block_row'] = features.index
+    features['source_name'] = source_name
+
+    # --- ⭐⭐ 新增：讓 block_index 可以區分 preset A/B/C/D ⭐⭐ ---
+    # 原始 block_index 在每個 preset 都從 0 開始
+    # 這會讓不同 preset 的 block 混在一起 → 不可用於 LOBO
+    # 因此對不同 preset 加 offset
+
+    preset_offset_map = {
+        'A': 1000,
+        'B': 2000,
+        'C': 3000,
+        'D': 4000,
+        'none': 0
+    }
+
+    offset = preset_offset_map.get(preset_id, 0)
+    if 'block_index' in features.columns:
+        features['block_index'] = features['block_index'] + offset
+    else:
+        raise ValueError("❌ CSV 缺少 block_index 欄位")
+    
+    
+    # --- 5) 讀能耗（逐 round），支援最後一回合沒有 TEST_ACCURACY 的情況 ---
+    energy_rounds = []
+    current = []
+    with open(energy_path, 'r') as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith("{"):
+                # {ForeignNode[...]}, idx, value
+                parts = line.split(',')
+                if len(parts) >= 3:
+                    try:
+                        # 讀取能耗值 (parts[2])
+                        current.append(float(parts[2]))
+                    except Exception:
+                        pass
+            # 用 TEST_ACCURACY 或 AVERAGE_SINGLE_INFERENCE_DLA_ENERGY_mJ 當一回合結尾
+            elif "TEST_ACCURACY" in line or "AVERAGE_SINGLE_INFERENCE_DLA_ENERGY_mJ" in line:
+                # 能耗行數要跟 block 數一致才收
+                if len(current) == len(features):
+                    energy_rounds.append(current)
+                current = []
+    # 若檔案尾端沒有 TEST_ACCURACY，但 buffer 有數據，嘗試最後收一次
+    if len(current) == len(features):
+        energy_rounds.append(current)
+
+    if len(energy_rounds) == 0:
+        raise ValueError(f"No energy rounds parsed from: {energy_path}")
+
+    # --- 6) 疊 round -> 加上 round_id ---
+    stacked = []
+    for r_id, energy_list in enumerate(energy_rounds):
+        df = features.copy()
+        df['energy_mj'] = energy_list
+        df['round_id'] = r_id
+        stacked.append(df)
+    df_all = pd.concat(stacked, axis=0, ignore_index=True)
+
+    # --- 7) 依 block_row 平均 round 能耗（降噪），保留第一筆的靜態特徵 ---
+    # 在聚合時，對所有非 source_name 和 block_row 的特徵取 'first' (因為靜態不變)
+    # keep_first = {c: 'first' for c in features.columns if c not in ['block_row', 'source_name']}
+    STATIC_COLS = [
+        c for c in features.columns
+        if c not in ['energy_mj', 'round_id', 'block_row']
+    ]
+    keep_first = {c: 'first' for c in STATIC_COLS}
+
+    
+    
+    agg = (
+        df_all.groupby(['source_name', 'block_row'], as_index=False)
+              .agg({**keep_first, 'energy_mj': 'mean'})
+    )
+
+    # 不再需要的原始字串欄位（已 One-Hot 或提取）
+    drop_cols = ['round_id', 'activation_types', 'layer_types',
+                 'input_tensor_shape', 'output_tensor_shape']
+    agg.drop(columns=[c for c in drop_cols if c in agg.columns], errors='ignore', inplace=True)
+    return agg
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--feature', nargs='+', required=True, help='List of feature CSV files')
+    parser.add_argument('--energy', nargs='+', required=True, help='List of energy files')
+    parser.add_argument('--out', required=True, help='Output CSV file path')
+    # 可選：若你真的想丟掉單層，也可以開這個開關
+    parser.add_argument('--drop-single-layer', action='store_true',
+                         help='Drop rows with num_layers==1 (default: keep them and tag)')
+    args = parser.parse_args()
+
+    if len(args.feature) != len(args.energy):
+        print("❌ 特徵與能耗檔案數量不一致")
+        return
+
+    all_data = []
+    all_columns = set()
+
+    # 先掃所有檔，彙整欄位
+    for f_path, e_path in zip(args.feature, args.energy):
+        source_name = os.path.basename(f_path).replace(".csv", "")
+        print(f"🔄 掃描: {source_name}")
+        tmp_df = load_feature_energy_pair(f_path, e_path, source_name)
+        all_columns.update(tmp_df.columns)
+        all_data.append(tmp_df)
+
+    # 欄位對齊（取聯集）
+    all_columns = sorted(list(all_columns))
+    aligned_data = []
+    for df in all_data:
+        for col in all_columns:
+            if col not in df.columns:
+                df[col] = 0
+        df = df[all_columns]
+        aligned_data.append(df)
+
+    final_df = pd.concat(aligned_data, axis=0, ignore_index=True)
+
+    # === 新增旗標：is_single_layer / is_eval_eligible ===
+    if 'num_layers' in final_df.columns:
+        final_df['is_single_layer'] = (final_df['num_layers'] == 1).astype(int)
+        final_df['is_eval_eligible'] = (final_df['num_layers'] > 1).astype(int)
+        if args.drop_single_layer:
+            before = len(final_df)
+            final_df = final_df[final_df['num_layers'] > 1].reset_index(drop=True)
+            after = len(final_df)
+            print(f"🧹 已移除單層 block（num_layers==1），共移除 {before - after} 筆")
+        else:
+            singles = int(final_df['is_single_layer'].sum())
+            print(f"✅ 已保留單層樣本 {singles} 筆（僅供訓練；評估請用 is_eval_eligible==1 篩選）")
+
+    # === 可選：若想保留 flops 與 block_name，把下面兩行註解掉 ===
+    drop_if_exist = ['block_name'] # 保留 flops
+
+    for c in drop_if_exist:
+        if c in final_df.columns:
+            final_df.drop(columns=[c], inplace=True)
+
+    # 不要縮放的欄位
+    exclude = {
+        'energy_mj', 'block_index', 'round', 'block_row','block_index_tail',
+        'is_single_layer', 'is_eval_eligible', 'source_name', 'preset_id'  # 保留 one-hot，不保留原字串
+    }
+
+    # 收集要縮放的數值欄位（自動偵測）
+    feature_cols = [
+        col for col in final_df.columns
+        if col not in exclude and pd.api.types.is_numeric_dtype(final_df[col])
+    ]
+
+    # 進行 MinMaxScaler
+    scaler = MinMaxScaler()
+    if len(feature_cols) > 0:
+        final_df[feature_cols] = scaler.fit_transform(final_df[feature_cols])
+    
+    # 📌 修正: 在寫入 CSV 之前，確保輸出目錄存在
+    output_dir = os.path.dirname(args.out)
+    if output_dir and not os.path.exists(output_dir):
+        # 遞迴創建所有缺失的父目錄 (parents=True)
+        os.makedirs(output_dir, exist_ok=True)
+        print(f"📁 已創建輸出目錄: {output_dir}")
+
+    # 最後輸出
+    final_df.to_csv(args.out, index=False)
+    print(f"✅ 已輸出標準化後資料至: {args.out}")
+    print("📌 提醒：訓練可用全部資料；評估/驗證請先篩選 is_eval_eligible==1（排除單層）。")
+if __name__ == "__main__":
+    main()

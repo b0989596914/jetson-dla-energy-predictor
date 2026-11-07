@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# 模型權重與引擎檔（不上傳）
+*.pth
+*.pt
+*.onnx
+*.engine
+*.trt
+*.plan
+*.pkl
+*.joblib
+Model/checkpoints/
+
+# 資料集與量測輸出
+Model/Data_*/
+data/
+logs/
+*.log
+outputs/
+
+# 系統與編輯器
+desktop.ini
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
